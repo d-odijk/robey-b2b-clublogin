@@ -1565,11 +1565,9 @@ body.rb-dialoog-open { overflow:hidden; }
 .rb-ov__bedrag { font-size:var(--robey-text-15); font-weight:800; letter-spacing:var(--robey-amount-tracking); white-space:nowrap; }
 .rb-ov__body { margin-top:14px; background:var(--robey-color-white); border:1px solid var(--robey-color-gray-2); border-radius:var(--robey-radius-cell); }
 .rb-ov__kleurregel { display:flex; gap:12px; padding:16px; }
-.rb-ov__regel + .rb-ov__kleurregel { border-top:1px solid var(--robey-color-gray-2); }   /* elke kleur met zijn eigen bedrukking */
 .rb-ov__foto { width:40px; height:50px; flex-shrink:0; overflow:hidden; }
 .rb-ov__foto img { width:100%; height:100%; object-fit:cover; display:block; }
-.rb-ov__kleurnaam { font-size:var(--robey-text-14); font-weight:600; }
-.rb-ov__chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
+.rb-ov__chips { display:flex; flex-wrap:wrap; align-content:center; gap:5px; }
 .rb-ov__regel { display:grid; grid-template-columns:minmax(0, 1fr); gap:6px; padding:16px; border-top:1px solid var(--robey-color-gray-2); font-size:var(--robey-text-14); line-height:1.45; }
 .rb-ov__lbl { font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
 /* per optie: letter, naam, som (15 × € 2,50) en totaal; de som op mobiel onder de naam, vanaf 768 ertussen; vaste kolommen houden de bedragen onder elkaar */
@@ -2532,6 +2530,9 @@ function drukStaat(m, art) { var s = m + '|' + art; return DRUK[s] || (DRUK[s] =
    Een eenheid is artikel en kleur, als "RS1016|502"; plekken en opties horen bij het artikel. */
 function sku(id) { return String(id).split('|')[0]; }
 function kleurNaam(r) { var img = r.querySelector('.rb-wk__foto img'); return img ? img.alt : r.dataset.kleur; }
+/* in stap 2 en het overzicht de kleur in de titel, het artikelnummer met kleur eronder: twee kleuren van een artikel staan onder elkaar */
+function eenheidNaam(e) { return e.k.querySelector('.rb-wk__artikel').textContent + ', ' + kleurNaam(e.r); }
+function eenheidCode(e) { return e.k.dataset.art + '-' + e.r.dataset.kleur; }
 function drukEenheden(w) {
   var uit = [];
   w.querySelectorAll('.rb-wk').forEach(function (k) {
@@ -2670,8 +2671,8 @@ function drukKaart(w, e) {
   var foto = e.r.querySelector('.rb-wk__foto img');
   /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit. Geen bedrag rechts: de kaart versprong bij elke keuze;
      de prijs per plek staat bij de keuzelijst, het totaal van de bedrukking in het kostenoverzicht (Dennis, 11 november) */
-  var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + k.querySelector('.rb-wk__artikel').textContent + '</b>'
-              + '<span class="rb-druk__sub">' + kleurNaam(e.r) + ', ' + sku(art) + ', ' + stuks.length + ' stuks</span></div></div>';
+  var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + eenheidNaam(e) + '</b>'
+              + '<span class="rb-druk__sub">' + eenheidCode(e) + ', ' + stuks.length + ' stuks</span></div></div>';
   if (!d) return '<div class="rb-druk__kaart" data-art="' + art + '"><div class="rb-druk__kop">' + artikel + '<div class="rb-druk__keuze"><span class="rb-druk__geen">Geen bedrukking mogelijk</span></div></div></div>';
   var kop = artikel + '<div class="rb-druk__keuze">'
           + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button>'
@@ -2773,7 +2774,7 @@ herbereken = function () {
     tot.textContent = geld(getal(tot.textContent) + som);
   });
 };
-/* stap 3: per artikel de kleuren met maten; onder elke kleur de eigen bedrukking en of namen en nummers compleet zijn (per kleur, Dennis 11 november) */
+/* stap 3: de bedrukking van een kleur en of namen en nummers compleet zijn */
 function ovDruk(w, id) {
   var d = drukOpties(id), st = drukStaat(w.dataset.modus, id), stuks = drukStukken(w, id), gekozen = drukGekozen(st, id), druk;
   if (!d) druk = 'Niet mogelijk';
@@ -2798,21 +2799,15 @@ function ovDruk(w, id) {
   }
   return html;
 }
-function overzichtRender(w) {
-  var perArtikel = [];
-  drukEenheden(w).forEach(function (e) { var g = perArtikel[perArtikel.length - 1]; if (g && g.k === e.k) g.e.push(e); else perArtikel.push({ k: e.k, e: [e] }); });
-  w.querySelector('.rb-ov__lijst').innerHTML = perArtikel.map(function (g) {
-    var art = g.k.dataset.art, stuks = drukStukken(w, art), body = '';
-    g.e.forEach(function (e) {
-      var r = e.r, n = 0, chips = '', img = r.querySelector('.rb-wk__foto img');
-      r.querySelectorAll('.robey-cell__input').forEach(function (v) { var x = parseInt(v.value, 10) || 0; if (x) { n += x; chips += '<span class="rb-chip">' + v.dataset.maat + ' <b>' + x + '</b></span>'; } });
-      body += '<div class="rb-ov__kleurregel"><span class="rb-ov__foto"><img src="' + img.src + '" alt=""></span><div><span class="rb-ov__kleurnaam">' + img.alt + '</span>'
-            + '<span class="rb-ov__sub">' + r.dataset.kleur + ', ' + n + (n === 1 ? ' stuk' : ' stuks') + '</span><div class="rb-ov__chips">' + chips + '</div></div></div>' + ovDruk(w, e.id);
-    });
-    return '<div class="rb-ov__art"><div class="rb-ov__artkop"><div class="rb-ov__naam">' + g.k.querySelector('.rb-wk__artikel').textContent + '<span class="rb-ov__sub">' + art + ', ' + stuks.length + ' stuks</span></div>'
-         + '<span class="rb-ov__bedrag">' + g.k.querySelector('.rb-wk__bedrag').innerHTML + '</span></div><div class="rb-ov__body">' + body + '</div>'
-         + '<div class="rb-ov__links"><button type="button" class="rb-lnk" data-ov-stap="1" data-art="' + art + '">Aantallen wijzigen</button>'
-         + (drukOpties(art) ? '<button type="button" class="rb-lnk" data-ov-stap="2" data-art="' + g.e[0].id + '">Bedrukking wijzigen</button>' : '') + '</div></div>';
+function overzichtRender(w) {   /* een kaart per artikel en kleur, zoals stap 2 (Dennis, 11 november) */
+  w.querySelector('.rb-ov__lijst').innerHTML = drukEenheden(w).map(function (e) {
+    var r = e.r, n = 0, chips = '', img = r.querySelector('.rb-wk__foto img');
+    r.querySelectorAll('.robey-cell__input').forEach(function (v) { var x = parseInt(v.value, 10) || 0; if (x) { n += x; chips += '<span class="rb-chip">' + v.dataset.maat + ' <b>' + x + '</b></span>'; } });
+    return '<div class="rb-ov__art"><div class="rb-ov__artkop"><div class="rb-ov__naam">' + eenheidNaam(e) + '<span class="rb-ov__sub">' + eenheidCode(e) + ', ' + n + (n === 1 ? ' stuk' : ' stuks') + '</span></div>'
+         + '<span class="rb-ov__bedrag">' + r.querySelector('.rb-wk__rijprijs').innerHTML + '</span></div>'
+         + '<div class="rb-ov__body"><div class="rb-ov__kleurregel"><span class="rb-ov__foto"><img src="' + img.src + '" alt=""></span><div class="rb-ov__chips">' + chips + '</div></div>' + ovDruk(w, e.id) + '</div>'
+         + '<div class="rb-ov__links"><button type="button" class="rb-lnk" data-ov-stap="1" data-art="' + e.k.dataset.art + '">Aantallen wijzigen</button>'
+         + (drukOpties(e.id) ? '<button type="button" class="rb-lnk" data-ov-stap="2" data-art="' + e.id + '">Bedrukking wijzigen</button>' : '') + '</div></div>';
   }).join('');
 }
 function overzichtKlaar(w) {   /* de referentie is verplicht; de rest niet */
