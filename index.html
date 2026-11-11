@@ -1581,9 +1581,6 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
 .rb-druk__foto img { width:100%; height:100%; object-fit:cover; display:block; }
 .rb-druk__titel { flex:1; min-width:0; display:flex; flex-direction:column; font-size:var(--robey-text-15); line-height:1.3; }
 .rb-druk__sub { font-size:var(--robey-text-12); color:var(--robey-color-gray-6); }
-.rb-druk__kosten { text-align:right; white-space:nowrap; }
-.rb-druk__kostenlabel { display:block; font-size:var(--robey-text-12); color:var(--robey-color-gray-6); }
-.rb-druk__kosten b { font-size:var(--robey-text-15); font-weight:800; letter-spacing:var(--robey-amount-tracking); }
 .rb-druk__aan { display:inline-flex; align-items:center; gap:10px; min-height:44px; font-size:var(--robey-text-14); font-weight:600; }
 .rb-druk__aan[aria-checked="true"] .rb-schakel { background:var(--robey-color-black); justify-content:flex-end; }
 .rb-druk__aan:focus-visible { outline:2px solid var(--robey-color-black); outline-offset:3px; }
@@ -1665,7 +1662,6 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
   .rb-ov__regel { grid-template-columns:150px minmax(0, 1fr); gap:12px; }
   .rb-proto-vorm { margin-top:0; }   /* in de titelregel, rechts */
   [data-druk-vorm="frame"] .rb-druk__kop { grid-template-columns:calc(276px + 17px) minmax(0, 1fr); }   /* schakelaar recht boven de opties in het witte vlak (16 px binnenruimte en 1 px rand) */
-  .rb-druk__kosten b { font-size:var(--robey-text-18); }
   /* eerste kolom: foto, tussenruimte en "Performance 2.0 Half-Zip Top" (218 px); het schuifje staat boven de opties */
   .rb-druk__kop, .rb-druk__body { grid-template-columns:276px minmax(0, 1fr); column-gap:24px; }
   .rb-druk__kop { align-items:center; }
@@ -1680,7 +1676,6 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
 @media (min-width:900px) {
   .rb-ov { grid-template-columns:minmax(0, 1fr) 320px; gap:32px; align-items:start; }
   .rb-druk__kaart { padding:18px 20px; }
-  .rb-druk__kosten b { font-size:var(--robey-text-20); }
   .rb-clublogo svg { height:50px; }
 }
 @media (min-width:1200px) {
@@ -2611,15 +2606,13 @@ function drukPerLetter(st, art, stuks, mist) {
 function drukKaart(w, k) {
   var art = k.dataset.art, d = drukOpties(art), st = drukStaat(w.dataset.modus, art), stuks = drukStukken(w, art);
   var foto = k.querySelector('.rb-wk__rij:not(.is-leeg) .rb-wk__foto img') || k.querySelector('.rb-wk__foto img');
-  /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit en rechts het bedrag */
+  /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit. Geen bedrag rechts: de kaart versprong bij elke keuze;
+     de prijs per plek staat bij de keuzelijst, het totaal van de bedrukking in het kostenoverzicht (Dennis, 11 november) */
   var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + k.querySelector('.rb-wk__artikel').textContent + '</b>'
               + '<span class="rb-druk__sub">' + art + ', ' + stuks.length + ' stuks</span></div></div>';
   if (!d) return '<div class="rb-druk__kaart" data-art="' + art + '"><div class="rb-druk__kop">' + artikel + '<div class="rb-druk__keuze"><span class="rb-druk__geen">Geen bedrukking mogelijk</span></div></div></div>';
   var kop = artikel + '<div class="rb-druk__keuze">'
-          + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button>'
-          + '<span class="rb-druk__kosten"' + (st.aan ? '' : ' hidden') + '><span class="rb-druk__kostenlabel">Bedrukking</span><b>' + geld(drukKosten(w, art)) + '</b>'
-          + (drukPerStuk(st, art) ? '<span class="rb-druk__kostenlabel">' + stuks.length + ' &times; ' + geld(drukPerStuk(st, art)) + '</span>' : '')   /* het bedrag is voor alle stuks samen (Dennis zag € 37,50 bij een clublogo) */
-          + (drukSponsor(st, art) ? '<span class="rb-druk__kostenlabel">excl. sponsor</span>' : '') + '</span></div>';
+          + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button></div>';
   var mist = w.dataset.drukFout ? drukMist(w, art) : null, perLetter = DRUK_MODEL === 'letters';
   var tekening = perLetter ? drukTekening(d, drukPlekken(art).map(function (p) { return p.l; }), function (l) { return !!st.keus[l]; })
                            : drukTekening(d, d.opties.map(function (o) { return o.l; }), function (l) { return !!st.opts[l]; });
