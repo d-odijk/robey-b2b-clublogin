@@ -1520,7 +1520,7 @@ body.rb-lb-open { overflow:hidden; }
 .rb-zoek__icoon { order:-1; }
 @media (min-width: 1200px) {
   .rb-zoek { gap:10px; padding:0 20px; }
-  .rb-zoekpaneel { right:auto; width:max(100%, 440px); }   /* het paneel met resultaten blijft leesbaar breed, ook als het zoekveld smal is (met SALDO_PLEK = 'beurs' smaller op 1200) */
+  .rb-zoekpaneel { left:50%; right:auto; width:max(100%, 440px); transform:translateX(-50%); }   /* leesbaar breed, ook als het zoekveld smal is; gecentreerd onder het veld (Dennis, 11 november) */
 }
 .rb-menu__saldo { font-size:var(--robey-text-13); color:var(--robey-color-gray-6); white-space:nowrap; }
 .rb-menu__saldo b { color:var(--robey-color-green-text); }   /* groen, zoals in de accountknop */
