@@ -1630,8 +1630,7 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
 .rb-druk__foto { width:44px; height:55px; overflow:hidden; flex-shrink:0; background:var(--robey-color-white); }
 .rb-druk__foto img { width:100%; height:100%; object-fit:cover; display:block; }
 .rb-druk__titel { flex:1; min-width:0; display:flex; flex-direction:column; font-size:var(--robey-text-15); line-height:1.3; }
-.rb-druk__sub { margin-top:3px; font-size:var(--robey-text-12); color:var(--robey-color-gray-6); line-height:1.5; }   /* lucht tussen de regels (Dennis, 11 november: opgekropt) */
-.rb-druk__stuks { font-size:var(--robey-text-12); color:var(--robey-color-black); line-height:1.5; }   /* hoeveel stuks er bedrukt worden: zwart, zodat het niet wegvalt; vet en groter was te druk (Dennis, 11 november) */
+.rb-druk__sub { margin-top:3px; font-size:var(--robey-text-12); color:var(--robey-color-gray-6); line-height:1.5; }   /* lucht tussen de regels (Dennis, 11 november: opgekropt) */   /* hoeveel stuks er bedrukt worden: zwart, zodat het niet wegvalt; vet en groter was te druk (Dennis, 11 november) */
 .rb-druk__aan { display:inline-flex; align-items:center; gap:10px; min-height:44px; font-size:var(--robey-text-14); font-weight:600; }
 .rb-druk__aan[aria-checked="true"] .rb-schakel { background:var(--robey-color-black); justify-content:flex-end; }
 .rb-druk__aan:focus-visible { outline:2px solid var(--robey-color-black); outline-offset:3px; }
@@ -2678,7 +2677,7 @@ function drukKaart(w, e) {
   /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit. Geen bedrag rechts: de kaart versprong bij elke keuze;
      de prijs per plek staat bij de keuzelijst, het totaal van de bedrukking in het kostenoverzicht (Dennis, 11 november) */
   var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + artikelNaam(e) + '</b>'
-              + '<span class="rb-druk__sub">' + eenheidCode(e) + '</span><span class="rb-druk__stuks">' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + '</span></div></div>';
+              + '<span class="rb-druk__sub">' + eenheidCode(e) + ', ' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + '</span></div></div>';   /* het aantal achter de kleur: twee regels, zoals het overzicht (Dennis, 11 november) */
   if (!d) return '<div class="rb-druk__kaart" data-art="' + art + '"><div class="rb-druk__kop">' + artikel + '<div class="rb-druk__keuze"><span class="rb-druk__geen">Geen bedrukking mogelijk</span></div></div></div>';
   var kop = artikel + '<div class="rb-druk__keuze">'
           + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button>'
