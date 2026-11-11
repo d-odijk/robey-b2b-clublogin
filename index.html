@@ -1569,8 +1569,17 @@ body.rb-dialoog-open { overflow:hidden; }
 .rb-ov__chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
 .rb-ov__regel { display:grid; grid-template-columns:minmax(0, 1fr); gap:4px; padding:12px 14px; border-top:1px solid var(--robey-color-gray-2); font-size:var(--robey-text-14); line-height:1.45; }
 .rb-ov__lbl { font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
-.rb-ov__optie { display:grid; grid-template-columns:20px minmax(0, 1fr) auto; align-items:center; gap:8px; max-width:340px; }   /* prijzen onder elkaar */
-.rb-ov__optieprijs { color:var(--robey-color-gray-6); white-space:nowrap; }
+/* per optie: letter, naam, som (15 × € 2,50) en totaal; de som op mobiel onder de naam, vanaf 768 ertussen; vaste kolommen houden de bedragen onder elkaar */
+.rb-ov__optie { display:grid; grid-template-columns:20px minmax(0, 1fr) 76px; grid-template-areas:"l n p" ". s ."; align-items:center; column-gap:8px; max-width:480px; }
+.rb-ov__optie > :first-child { grid-area:l; }
+.rb-ov__optienaam { grid-area:n; }
+.rb-ov__som { grid-area:s; font-size:var(--robey-text-13); color:var(--robey-color-gray-6); white-space:nowrap; }
+.rb-ov__optieprijs { grid-area:p; text-align:right; white-space:nowrap; }
+.rb-ov__optie--totaal { margin-top:8px; padding-top:8px; border-top:1px solid var(--robey-color-gray-2); font-weight:600; }
+@media (min-width:768px) {
+  .rb-ov__optie { grid-template-columns:20px minmax(0, 1fr) 96px 76px; grid-template-areas:"l n s p"; }
+  .rb-ov__som { text-align:right; }
+}
 .rb-ov__optie + .rb-ov__optie { margin-top:4px; }
 .rb-ov__klein { display:block; margin-top:4px; font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
 .rb-ov__regel .rb-lnk { margin-left:10px; }
@@ -2752,11 +2761,15 @@ function overzichtRender(w) {
     else if (!gekozen.length) druk = 'Geen';
     else {
       var perStuk = drukPerStuk(st, art);
+      /* per optie de som en het totaal voor alle stuks, eronder het totaal van de bedrukking; "per stuk" las als per optie (Dennis, 11 november) */
+      var regel = function (letter, naam, som, bedrag, extra) {
+        return '<span class="rb-ov__optie' + (extra || '') + '">' + letter + '<span class="rb-ov__optienaam">' + naam + '</span><span class="rb-ov__som">' + som + '</span><span class="rb-ov__optieprijs">' + bedrag + '</span></span>';
+      };
       druk = gekozen.map(function (o) {
         var tekst = o.tekst ? ': ' + attr((st.tekst[o.l] || '').trim()) : '';
-        return '<span class="rb-ov__optie"><span class="rb-druk__letter">' + o.l + '</span><span>' + o.naam + tekst + '</span><span class="rb-ov__optieprijs">' + (o.prijs == null ? 'n.t.b.' : geld(o.prijs)) + '</span></span>';
-      }).join('')   /* per optie de prijs, eronder de som met het aantal stuks: "per stuk" las als per optie (Dennis, 11 november) */
-        + (perStuk ? '<span class="rb-ov__klein">' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + ' &times; ' + geld(perStuk) + ' = ' + geld(drukKosten(w, art)) + '</span>' : '')
+        return regel('<span class="rb-druk__letter">' + o.l + '</span>', o.naam + tekst, o.prijs == null ? '' : stuks.length + ' &times; ' + geld(o.prijs), o.prijs == null ? 'n.t.b.' : geld(o.prijs * stuks.length));
+      }).join('')
+        + (perStuk && gekozen.length > 1 ? regel('<span></span>', 'Totaal bedrukking', '', geld(drukKosten(w, art)), ' rb-ov__optie--totaal') : '')   /* bij één optie zegt het totaal niets nieuws */
         + (drukSponsor(st, art) ? '<span class="rb-ov__klein">Sponsor: prijs n.t.b. door ' + RETAILER + '</span>' : '');
     }
     body += '<div class="rb-ov__regel"><span class="rb-ov__lbl">Bedrukking</span><div>' + druk + '</div></div>';
