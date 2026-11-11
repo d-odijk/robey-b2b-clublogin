@@ -1681,7 +1681,8 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
 @media (min-width:1200px) {
   [data-druk-model="letters"] .rb-druk__kop, [data-druk-model="letters"] .rb-druk__body { column-gap:64px; }   /* Bedrukken staat zo onder de stip van stap 2 (Dennis, 11 november) */
   .rb-druk__keus { height:40px; }
-  .rb-druk__opties.rb-druk__opties--letters { grid-template-columns:max-content minmax(0, max-content); justify-content:start; column-gap:48px; }   /* gaat voor de twee kolommen van 'opties' verderop */
+  .rb-druk__opties.rb-druk__opties--letters { grid-template-columns:max-content minmax(0, max-content); justify-content:start; column-gap:32px; }   /* gaat voor de twee kolommen van 'opties' verderop; 32 plus de lege ruimte achter de prijs
+     oogt als ±48, kleiner dan de 64 naast de tekening (Dennis, 11 november) */
   .rb-druk__opties--letters .rb-druk__groep + .rb-druk__groep { margin-top:0; }
 }
 .rb-proto-vorm i { width:1px; height:18px; margin:0 8px 0 4px; background:rgba(255,255,255,.3); }
