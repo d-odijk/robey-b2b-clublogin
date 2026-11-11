@@ -2661,7 +2661,7 @@ function drukPerLetter(st, art, stuks, mist) {
     };
     /* alleen de letter, zoals bij Stanno; de naam van de plek alleen voor schermlezers (Dennis, 11 november) */
     return '<div class="rb-druk__plekrij' + (o ? ' is-aan' : '') + '" data-plekrij="' + p.l + '"><label class="rb-druk__letter" for="' + id + '">' + p.l + '</label>'
-         + '<select class="rb-druk__keus" id="' + id + '" data-druk-plek="' + p.l + '" aria-label="Plek ' + p.l + ', ' + p.naam.toLowerCase() + '"><option value="">Leeg</option>'
+         + '<select class="rb-druk__keus" id="' + id + '" data-druk-plek="' + p.l + '" aria-label="Plek ' + p.l + ', ' + p.naam.toLowerCase() + '"><option value="">Geen</option>'
          + p.keuzes.map(optie).join('')   /* één lijst zonder groep, "Sponsor" voor de naam: de browser tekent een groep grijs en ingesprongen (Dennis, 11 november) */
          + '</select><span class="rb-druk__prijs">' + (o ? geld(o.prijs) : '') + '</span></div>';   /* per stuk: dat staat bij het bedrag bovenaan (15 × € 2,50) */
   };
