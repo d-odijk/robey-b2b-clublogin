@@ -2677,7 +2677,7 @@ function drukKaart(w, e) {
   /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit. Geen bedrag rechts: de kaart versprong bij elke keuze;
      de prijs per plek staat bij de keuzelijst, het totaal van de bedrukking in het kostenoverzicht (Dennis, 11 november) */
   var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + artikelNaam(e) + '</b>'
-              + '<span class="rb-druk__sub">' + eenheidCode(e) + ', ' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + '</span></div></div>';   /* het aantal achter de kleur: twee regels, zoals het overzicht (Dennis, 11 november) */
+              + '<span class="rb-druk__sub">' + eenheidCode(e) + '<br>' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + '</span></div></div>';   /* het aantal op een eigen regel in dezelfde stijl: achter een lange kleur als Black/Royal Blue werd de regel te lang (Dennis, 11 november) */
   if (!d) return '<div class="rb-druk__kaart" data-art="' + art + '"><div class="rb-druk__kop">' + artikel + '<div class="rb-druk__keuze"><span class="rb-druk__geen">Geen bedrukking mogelijk</span></div></div></div>';
   var kop = artikel + '<div class="rb-druk__keuze">'
           + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button>'
