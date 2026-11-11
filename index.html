@@ -1569,7 +1569,8 @@ body.rb-dialoog-open { overflow:hidden; }
 .rb-ov__chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
 .rb-ov__regel { display:grid; grid-template-columns:minmax(0, 1fr); gap:4px; padding:12px 14px; border-top:1px solid var(--robey-color-gray-2); font-size:var(--robey-text-14); line-height:1.45; }
 .rb-ov__lbl { font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
-.rb-ov__optie { display:flex; align-items:center; gap:8px; }
+.rb-ov__optie { display:grid; grid-template-columns:20px minmax(0, 1fr) auto; align-items:center; gap:8px; max-width:340px; }   /* prijzen onder elkaar */
+.rb-ov__optieprijs { color:var(--robey-color-gray-6); white-space:nowrap; }
 .rb-ov__optie + .rb-ov__optie { margin-top:4px; }
 .rb-ov__klein { display:block; margin-top:4px; font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
 .rb-ov__regel .rb-lnk { margin-left:10px; }
@@ -2753,8 +2754,9 @@ function overzichtRender(w) {
       var perStuk = drukPerStuk(st, art);
       druk = gekozen.map(function (o) {
         var tekst = o.tekst ? ': ' + attr((st.tekst[o.l] || '').trim()) : '';
-        return '<span class="rb-ov__optie"><span class="rb-druk__letter">' + o.l + '</span><span>' + o.naam + tekst + '</span></span>';
-      }).join('') + (perStuk ? '<span class="rb-ov__klein">' + geld(perStuk) + ' per stuk, samen ' + geld(drukKosten(w, art)) + '</span>' : '')
+        return '<span class="rb-ov__optie"><span class="rb-druk__letter">' + o.l + '</span><span>' + o.naam + tekst + '</span><span class="rb-ov__optieprijs">' + (o.prijs == null ? 'n.t.b.' : geld(o.prijs)) + '</span></span>';
+      }).join('')   /* per optie de prijs, eronder de som met het aantal stuks: "per stuk" las als per optie (Dennis, 11 november) */
+        + (perStuk ? '<span class="rb-ov__klein">' + stuks.length + (stuks.length === 1 ? ' stuk' : ' stuks') + ' &times; ' + geld(perStuk) + ' = ' + geld(drukKosten(w, art)) + '</span>' : '')
         + (drukSponsor(st, art) ? '<span class="rb-ov__klein">Sponsor: prijs n.t.b. door ' + RETAILER + '</span>' : '');
     }
     body += '<div class="rb-ov__regel"><span class="rb-ov__lbl">Bedrukking</span><div>' + druk + '</div></div>';
