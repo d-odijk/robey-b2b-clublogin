@@ -1552,22 +1552,24 @@ body.rb-dialoog-open { overflow:hidden; }
 [data-druk-vorm="lijstgrijs"] .rb-druk__optie, [data-druk-vorm="kader"] .rb-druk__optie { background:var(--robey-color-gray-1); }
 
 /* stap 3: overzicht; links per artikel wat er besteld en bedrukt wordt, rechts de gegevens bij de bestelling */
-.rb-overzicht { margin-top:20px; }
+.rb-overzicht { margin-top:28px; }
 .rb-ov { display:grid; gap:28px; }
-.rb-ov__kop { margin:0 0 12px; font-size:var(--robey-text-18); font-weight:700; letter-spacing:var(--robey-amount-tracking); }
-.rb-ov__art { padding:16px; background:var(--robey-color-gray-1); border-radius:var(--robey-radius-large); }
-.rb-ov__art + .rb-ov__art { margin-top:12px; }
-.rb-ov__artkop { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.rb-ov__kop { margin:0 0 16px; font-size:var(--robey-text-18); font-weight:700; letter-spacing:var(--robey-amount-tracking); }
+/* één witte kaart per artikel, zonder kader erin; meer ruimte (Dennis, 11 november: het overzicht voelde opgekropt) */
+.rb-ov__art { background:var(--robey-color-white); border:1px solid var(--robey-color-gray-2); border-radius:var(--robey-radius-large); }
+.rb-ov__art + .rb-ov__art { margin-top:16px; }
+.rb-ov__artkop { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:16px 16px 14px; }
 .rb-ov__naam { font-size:var(--robey-text-15); font-weight:700; line-height:1.3; }
 .rb-ov__sub { display:block; font-size:var(--robey-text-12); font-weight:400; color:var(--robey-color-gray-6); }
 .rb-ov__bedrag { font-size:var(--robey-text-15); font-weight:800; letter-spacing:var(--robey-amount-tracking); white-space:nowrap; }
-.rb-ov__body { margin-top:12px; background:var(--robey-color-white); border:1px solid var(--robey-color-gray-2); border-radius:var(--robey-radius-cell); }
-.rb-ov__kleurregel { display:flex; gap:12px; padding:12px 14px; }
+.rb-ov__body { border-top:1px solid var(--robey-color-gray-2); }
+.rb-ov__kleurregel { display:flex; gap:12px; padding:16px; }
+.rb-ov__kleurregel + .rb-ov__kleurregel { padding-top:0; }
 .rb-ov__foto { width:40px; height:50px; flex-shrink:0; overflow:hidden; }
 .rb-ov__foto img { width:100%; height:100%; object-fit:cover; display:block; }
 .rb-ov__kleurnaam { font-size:var(--robey-text-14); font-weight:600; }
 .rb-ov__chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
-.rb-ov__regel { display:grid; grid-template-columns:minmax(0, 1fr); gap:4px; padding:12px 14px; border-top:1px solid var(--robey-color-gray-2); font-size:var(--robey-text-14); line-height:1.45; }
+.rb-ov__regel { display:grid; grid-template-columns:minmax(0, 1fr); gap:6px; padding:16px; border-top:1px solid var(--robey-color-gray-2); font-size:var(--robey-text-14); line-height:1.45; }
 .rb-ov__lbl { font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
 /* per optie: letter, naam, som (15 × € 2,50) en totaal; de som op mobiel onder de naam, vanaf 768 ertussen; vaste kolommen houden de bedragen onder elkaar */
 .rb-ov__optie { display:grid; grid-template-columns:20px minmax(0, 1fr) 76px; grid-template-areas:"l n p" ". s ."; align-items:center; column-gap:8px; max-width:480px; }
@@ -1575,16 +1577,19 @@ body.rb-dialoog-open { overflow:hidden; }
 .rb-ov__optienaam { grid-area:n; }
 .rb-ov__som { grid-area:s; font-size:var(--robey-text-13); color:var(--robey-color-gray-6); white-space:nowrap; }
 .rb-ov__optieprijs { grid-area:p; text-align:right; white-space:nowrap; }
-.rb-ov__optie--totaal { margin-top:8px; padding-top:8px; border-top:1px solid var(--robey-color-gray-2); font-weight:600; }
+.rb-ov__optie--totaal { grid-template-areas:"l n p"; margin-top:8px; padding-top:8px; border-top:1px solid var(--robey-color-gray-2); font-weight:600; }
+.rb-ov__optie--totaal .rb-ov__optienaam { text-align:right; }   /* "Totaal bedrukking" direct naast het bedrag (Dennis, 11 november) */
+.rb-ov__optie--totaal .rb-ov__som { display:none; }
 @media (min-width:768px) {
   .rb-ov__optie { grid-template-columns:20px minmax(0, 1fr) 96px 76px; grid-template-areas:"l n s p"; }
+  .rb-ov__optie--totaal { grid-template-areas:"l n n p"; }
   .rb-ov__som { text-align:right; }
 }
-.rb-ov__optie + .rb-ov__optie { margin-top:4px; }
+.rb-ov__optie + .rb-ov__optie { margin-top:8px; }
 .rb-ov__klein { display:block; margin-top:4px; font-size:var(--robey-text-13); color:var(--robey-color-gray-6); }
 .rb-ov__regel .rb-lnk { margin-left:10px; }
-.rb-ov__links { display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:10px; font-size:var(--robey-text-13); }
-.rb-ov__veld { display:block; margin-bottom:16px; }
+.rb-ov__links { display:flex; flex-wrap:wrap; gap:6px 20px; padding:0 16px 16px; font-size:var(--robey-text-13); }
+.rb-ov__veld { display:block; margin-bottom:20px; }
 .rb-ov__label { display:block; margin-bottom:6px; font-size:var(--robey-text-14); font-weight:600; }
 .rb-ov__optioneel { font-weight:400; color:var(--robey-color-gray-6); }
 .rb-ov__invoer { display:block; width:100%; height:44px; padding:0 12px; border:1px solid var(--robey-color-gray-3); border-radius:var(--robey-radius-small); background:var(--robey-color-white); font:inherit; font-size:16px; }
@@ -1699,7 +1704,10 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
   .rb-voet__regel { font-size:var(--robey-text-14); line-height:26px; }
   .rb-voet__logo { margin-top:0; }
   .rb-druk__kaart { padding:16px 18px; border:1px solid var(--robey-color-gray-2); border-radius:0; }
-  .rb-ov__art { padding:16px 18px; border:1px solid var(--robey-color-gray-2); border-radius:0; }   /* zoals de kaarten in stap 1 en 2 */
+  .rb-ov__art { border-radius:0; }   /* zoals de kaarten in stap 1 en 2 */
+  .rb-ov__artkop { padding:20px 24px 16px; }
+  .rb-ov__kleurregel, .rb-ov__regel { padding:18px 24px; }
+  .rb-ov__links { padding:0 24px 20px; }
   .rb-ov__regel { grid-template-columns:150px minmax(0, 1fr); gap:12px; }
   .rb-proto-vorm { margin-top:0; }   /* in de titelregel, rechts */
   [data-druk-vorm="frame"] .rb-druk__kop { grid-template-columns:calc(276px + 17px) minmax(0, 1fr); }   /* schakelaar recht boven de opties in het witte vlak (16 px binnenruimte en 1 px rand) */
