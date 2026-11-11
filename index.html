@@ -1561,7 +1561,7 @@ body.rb-dialoog-open { overflow:hidden; }
 .rb-ov__art + .rb-ov__art { margin-top:20px; }
 .rb-ov__artkop { display:flex; align-items:center; gap:12px; }
 .rb-ov__naam { flex:1; min-width:0; font-size:var(--robey-text-15); font-weight:700; line-height:1.3; }
-.rb-ov__sub { display:block; font-size:var(--robey-text-12); font-weight:400; color:var(--robey-color-gray-6); }
+.rb-ov__sub { display:block; margin-top:3px; font-size:var(--robey-text-12); font-weight:400; color:var(--robey-color-gray-6); line-height:1.5; }   /* zoals de kop in stap 2 */
 .rb-ov__bedrag { font-size:var(--robey-text-15); font-weight:800; letter-spacing:var(--robey-amount-tracking); white-space:nowrap; }
 .rb-ov__body { margin-top:14px; background:var(--robey-color-white); border:1px solid var(--robey-color-gray-2); border-radius:var(--robey-radius-cell); }
 .rb-ov__foto { width:40px; height:50px; flex-shrink:0; overflow:hidden; }
@@ -1630,8 +1630,8 @@ textarea.rb-ov__invoer { height:auto; padding:10px 12px; resize:vertical; }
 .rb-druk__foto { width:44px; height:55px; overflow:hidden; flex-shrink:0; background:var(--robey-color-white); }
 .rb-druk__foto img { width:100%; height:100%; object-fit:cover; display:block; }
 .rb-druk__titel { flex:1; min-width:0; display:flex; flex-direction:column; font-size:var(--robey-text-15); line-height:1.3; }
-.rb-druk__sub { font-size:var(--robey-text-12); color:var(--robey-color-gray-6); }
-.rb-druk__stuks { font-size:var(--robey-text-12); color:var(--robey-color-black); }   /* hoeveel stuks er bedrukt worden: zwart, zodat het niet wegvalt; vet en groter was te druk (Dennis, 11 november) */
+.rb-druk__sub { margin-top:3px; font-size:var(--robey-text-12); color:var(--robey-color-gray-6); line-height:1.5; }   /* lucht tussen de regels (Dennis, 11 november: opgekropt) */
+.rb-druk__stuks { font-size:var(--robey-text-12); color:var(--robey-color-black); line-height:1.5; }   /* hoeveel stuks er bedrukt worden: zwart, zodat het niet wegvalt; vet en groter was te druk (Dennis, 11 november) */
 .rb-druk__aan { display:inline-flex; align-items:center; gap:10px; min-height:44px; font-size:var(--robey-text-14); font-weight:600; }
 .rb-druk__aan[aria-checked="true"] .rb-schakel { background:var(--robey-color-black); justify-content:flex-end; }
 .rb-druk__aan:focus-visible { outline:2px solid var(--robey-color-black); outline-offset:3px; }
