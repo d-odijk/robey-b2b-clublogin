@@ -2535,9 +2535,9 @@ function drukStaat(m, art) { var s = m + '|' + art; return DRUK[s] || (DRUK[s] =
    Een eenheid is artikel en kleur, als "RS1016|502"; plekken en opties horen bij het artikel. */
 function sku(id) { return String(id).split('|')[0]; }
 function kleurNaam(r) { var img = r.querySelector('.rb-wk__foto img'); return img ? img.alt : r.dataset.kleur; }
-/* in stap 2 en het overzicht de kleur in de titel, het artikelnummer met kleur eronder: twee kleuren van een artikel staan onder elkaar */
-function eenheidNaam(e) { return e.k.querySelector('.rb-wk__artikel').textContent + ', ' + kleurNaam(e.r); }
-function eenheidCode(e) { return e.k.dataset.art + '-' + e.r.dataset.kleur; }
+/* in stap 2 en het overzicht de productnaam als titel, zoals in stap 1; eronder artikelnummer en kleur samen, want -100 is White (Dennis, 11 november) */
+function artikelNaam(e) { return e.k.querySelector('.rb-wk__artikel').textContent; }
+function eenheidCode(e) { return e.k.dataset.art + '-' + e.r.dataset.kleur + ', ' + kleurNaam(e.r); }
 function drukEenheden(w) {
   var uit = [];
   w.querySelectorAll('.rb-wk').forEach(function (k) {
@@ -2676,8 +2676,8 @@ function drukKaart(w, e) {
   var foto = e.r.querySelector('.rb-wk__foto img');
   /* links het artikel, in de tweede kolom (boven de opties) bedrukken aan of uit. Geen bedrag rechts: de kaart versprong bij elke keuze;
      de prijs per plek staat bij de keuzelijst, het totaal van de bedrukking in het kostenoverzicht (Dennis, 11 november) */
-  var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + eenheidNaam(e) + '</b>'
-              + '<span class="rb-druk__sub">' + eenheidCode(e) + ', ' + stuks.length + ' stuks</span></div></div>';
+  var artikel = '<div class="rb-druk__art"><span class="rb-druk__foto"><img src="' + foto.src + '" alt=""></span><div class="rb-druk__titel"><b>' + artikelNaam(e) + '</b>'
+              + '<span class="rb-druk__sub">' + eenheidCode(e) + '</span><span class="rb-druk__sub">' + stuks.length + ' stuks</span></div></div>';
   if (!d) return '<div class="rb-druk__kaart" data-art="' + art + '"><div class="rb-druk__kop">' + artikel + '<div class="rb-druk__keuze"><span class="rb-druk__geen">Geen bedrukking mogelijk</span></div></div></div>';
   var kop = artikel + '<div class="rb-druk__keuze">'
           + '<button type="button" class="rb-druk__aan" role="switch" aria-checked="' + st.aan + '" data-druk-aan><span class="rb-schakel"><span></span></span>Bedrukken</button>'
@@ -2809,7 +2809,7 @@ function overzichtRender(w) {   /* een kaart per artikel en kleur, zoals stap 2 
     /* het aantal als eigen regel zoals de bedrukking: het totaal groot, per maat een vakje met de maat boven het aantal (Dennis, 11 november) */
     var r = e.r, n = 0, maten = '', img = r.querySelector('.rb-wk__foto img');
     r.querySelectorAll('.robey-cell__input').forEach(function (v) { var x = parseInt(v.value, 10) || 0; if (x) { n += x; maten += '<span class="rb-ov__maat"><span>' + v.dataset.maat + '</span><b>' + x + '</b></span>'; } });
-    return '<div class="rb-ov__art"><div class="rb-ov__artkop"><span class="rb-ov__foto"><img src="' + img.src + '" alt=""></span><div class="rb-ov__naam">' + eenheidNaam(e) + '<span class="rb-ov__sub">' + eenheidCode(e) + '</span></div>'
+    return '<div class="rb-ov__art"><div class="rb-ov__artkop"><span class="rb-ov__foto"><img src="' + img.src + '" alt=""></span><div class="rb-ov__naam">' + artikelNaam(e) + '<span class="rb-ov__sub">' + eenheidCode(e) + '</span></div>'
          + '<span class="rb-ov__bedrag">' + r.querySelector('.rb-wk__rijprijs').innerHTML + '</span></div>'
          + '<div class="rb-ov__body"><div class="rb-ov__regel"><span class="rb-ov__lbl">Aantal</span><div><b class="rb-ov__stuks">' + n + (n === 1 ? ' stuk' : ' stuks') + '</b>'
          + '<div class="rb-ov__maten">' + maten + '</div></div></div>' + ovDruk(w, e.id) + '</div>'
