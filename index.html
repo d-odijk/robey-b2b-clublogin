@@ -1495,6 +1495,12 @@ body.rb-lb-open { overflow:hidden; }
 /* saldo: 'account' = het bedrag in de accountknop, zonder naam; 'beurs' = de accountknop met naam, daarnaast portemonnee en bedrag,
    met het saldo in een eigen paneel onder de portemonnee (vanaf 900; smaller gaat de knop naar Clubgegevens) */
 [data-saldo="beurs"] .rb-acc .rb-saldoblok { display:none; }
+/* in het saldovenster wit, met Saldo en het bedrag op één regel en de potjes eronder (Dennis, 11 november) */
+.rb-saldo .rb-saldoblok { display:grid; grid-template-columns:1fr auto; align-items:baseline; column-gap:12px; padding:16px 20px; background:var(--robey-color-white); }
+.rb-saldo .rb-saldoblok:hover { background:var(--robey-color-gray-1); }
+.rb-saldo .rb-saldoblok__label { font-size:var(--robey-text-14); font-weight:600; color:var(--robey-color-black); }
+.rb-saldo .rb-saldoblok__bedrag { margin:0 0 4px; font-size:var(--robey-text-16); }
+.rb-saldo .rb-saldoblok__rij { grid-column:1 / -1; }
 .rb-pil__ico { display:inline-flex; }   /* het icoon is te wisselen (prototypebalk); de svg blijft first-child voor de maat van fase 1 */
 @media (min-width: 900px) {
   .rb-header.is-saldo .rb-saldo { display:block; }
