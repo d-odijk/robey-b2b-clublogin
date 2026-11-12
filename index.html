@@ -1471,13 +1471,10 @@ body.rb-lb-open { overflow:hidden; }
 /* alleen voor schermlezers */
 /* na het subtotaal het bedrag na clubkorting, of de korting als minregel (prototypebalk, Dennis 12 november) */
 [data-korting="regel"] .rb-ko__item--nakorting, [data-korting="nakorting"] .rb-ko__item--regel { display:none; }
-.rb-ko__bespaard { margin-left:6px; font-size:var(--robey-text-13); font-weight:500; color:var(--robey-color-gray-6); letter-spacing:0; white-space:nowrap; }
-@media (max-width:1239px) {   /* smaller dan 1240 de korting onder het bedrag: op één regel past de knop niet meer naast de bedragen */
-  .rb-ko__item--nakorting .rb-ko__val { display:flex; flex-direction:column; }
-  .rb-ko__item--nakorting .rb-ko__bespaard { margin-left:0; }
-}
+.rb-ko__bespaard { font-size:var(--robey-text-13); font-weight:500; color:var(--robey-color-gray-6); letter-spacing:0; white-space:nowrap; }
+.rb-ko__item--nakorting .rb-ko__val { display:flex; flex-direction:column; }   /* de korting onder het bedrag, op elke breedte (Dennis, 12 november) */
 @media (max-width:899px) { .rb-ko__item--nakorting .rb-ko__val { align-items:flex-end; } }
-@media (min-width:900px) and (max-width:1239px) {   /* de bedragen op één lijn, de korting hangt eronder; de knop in het midden */
+@media (min-width:900px) {   /* de bedragen op één lijn, de korting hangt eronder; de knop in het midden */
   [data-korting="nakorting"] .rb-ko__eind { align-items:flex-start; }
   [data-korting="nakorting"] .rb-ko__eind .rb-ko__knop { align-self:center; }
 }
