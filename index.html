@@ -1442,10 +1442,10 @@ body.rb-lb-open { overflow:hidden; }
 }
 
 /* ============================================================ clublogin */
-/* clubartikelen (CM): geen voorraad, dus geen kleur per maat. Een zwarte lijn, want lichtgrijs oogde als niet beschikbaar;
-   ingevuld zonder tint, een grijze tint oogt ook zo (Dennis, 18 november) */
-.robey-cell--cm .robey-cell__input { border-top-color:var(--robey-color-black); background:var(--robey-color-white); font-weight:500; }
-.robey-cell--cm.is-filled .robey-cell__input { font-weight:700; }
+/* clubartikelen (CM): geen voorraad per maat, dus overal het blauw van het levertijdvlak erboven; ingevuld een lichtblauw vlak.
+   Lichtgrijs oogde als niet beschikbaar, zwart was niet sterk. Zelfde stijl als Voorverkoop in fase 1, dat clubs niet kennen (Dennis, 18 november) */
+.robey-cell--cm .robey-cell__input { border-top-color:var(--robey-color-blue); background:var(--robey-color-white); font-weight:500; }
+.robey-cell--cm.is-filled .robey-cell__input { background:var(--robey-color-blue-tint); font-weight:700; }
 /* de levertijd boven de maten, als lichtblauw vlak met icoon en kop: als grijze regel viel het niet op, en blauw botst niet met groen en oranje van de voorraad (Dennis, 18 november) */
 .rb-cmlever { display:flex; align-items:flex-start; gap:10px; max-width:560px; margin:12px 0 0; padding:12px 14px; background:var(--robey-color-blue-tint); border-radius:var(--robey-radius-small);
   font-size:var(--robey-text-13); line-height:1.5; color:var(--robey-color-black); }
